@@ -47,7 +47,7 @@ app.get('/api/persons', (req, res, next) => {
 app.get('/info', (req, res, next) => {
   const date = new Date()
   Person.countDocuments({}).then(count => {
-    res.status(201).send(`<p>Phonebook has info for ${count} people</p><p>${date}</p>`)   
+    res.status(201).send(`<p>Phonebook has info for ${count} people</p><p>${date}</p>`)
   }).catch(
     error => next(error)
   )
@@ -84,12 +84,12 @@ app.delete('/api/persons/:id', (req, res, next) => {
 app.put('/api/persons/:id', (req, res, next) => {
   const id = req.params.id
   const number = req.body.number
-  
+
   Person.schema.path('number').validate(function (value) {
     return /\d{2}-\d{7}/.test(value)
   }, 'Invalid phone number')
 
-  Person.findOneAndUpdate( 
+  Person.findOneAndUpdate(
     { _id: id },
     { number },
     { new: true, runValidators: true })

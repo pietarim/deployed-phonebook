@@ -85,9 +85,17 @@ app.delete('/api/persons/:id', (req, res, next) => {
 
 app.put('/api/persons/:id', (req, res, next) => {
   const id = req.params.id
-  const name = req.body.name
+  /* const name = req.body.name */
   const number = req.body.number
-  Person.findByIdAndUpdate(id, { name, number }, { new: true })
+  
+  Person.schema.path('number').validate(function (value) {
+    return /\d{2}-\d{7}/.test(value)
+  }, 'Invalid phone number')
+
+  Person.findOneAndUpdate( 
+    { _id: id },
+    { /* name, */ number },
+    { new: true, runValidators: true })
     .then(person => {
       res.json(person)
     })

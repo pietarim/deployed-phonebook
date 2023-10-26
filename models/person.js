@@ -33,5 +33,9 @@ personSchema.set('toJSON', {
 })
 
 const Person = mongoose.model('Person', personSchema)
+/* Person.schema.path('number').validate(function (value) {
+  return /\d{2}-\d{7}/.test(value)
+}, 'Invalid phone number') */
+
 Person.ensureIndexes()
 module.exports = Person

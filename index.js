@@ -15,9 +15,7 @@ const errorHandler = (error, req, res, next) => {
     return res.status(400).json({ error: error.message })
   } else if (error.code === 11000) {
     return res.status(400).json({ error: 'name must be unique' })
-  } /* else if (error.message.includes('ValidationError: Person validation failed: number:')) {
-    return res.status(400).json({ error: error.message })
-  } */ else if (error.message) {
+  } else if (error.message) {
     return res.status(400).json({ error: error.message })
   } else {
     return res.status(500).json({ error: 'something went wrong...' })
@@ -85,7 +83,6 @@ app.delete('/api/persons/:id', (req, res, next) => {
 
 app.put('/api/persons/:id', (req, res, next) => {
   const id = req.params.id
-  /* const name = req.body.name */
   const number = req.body.number
   
   Person.schema.path('number').validate(function (value) {
@@ -94,7 +91,7 @@ app.put('/api/persons/:id', (req, res, next) => {
 
   Person.findOneAndUpdate( 
     { _id: id },
-    { /* name, */ number },
+    { number },
     { new: true, runValidators: true })
     .then(person => {
       res.json(person)
